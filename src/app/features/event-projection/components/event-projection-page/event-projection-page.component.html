@@ -1,1 +1,21 @@
-<p>event-projection-page works!</p>
+<header>
+    <section class="header-container">
+        <h1>Iniciar novas Entidades</h1>
+        <button aria-label="Fechar seção" class="header-btn-close">X</button>
+    </section>
+</header>
+<main>
+    <section>
+        <app-entity-input></app-entity-input>
+    </section>
+    <section>
+        <app-cycle-selector></app-cycle-selector>
+    </section>
+    <section>
+        <app-events-chart></app-events-chart>
+    </section>
+</main>
+<footer class="footer">
+    <button mat-fab extended class="footer-btn-close" aria-label="Fechar">Fechar</button>
+    <button mat-fab extended class="footer-btn-start" aria-label="Iniciar novas Entidades">Iniciar novas Entidades</button>
+</footer>

@@ -1,0 +1,14 @@
+@import '../../../../../styles/_colors.scss';
+
+main {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    max-width: 50vw;
+    padding: 1.5rem 1rem;
+    background-color: $color-light-gray;
+    border-radius: .5rem;
+}
