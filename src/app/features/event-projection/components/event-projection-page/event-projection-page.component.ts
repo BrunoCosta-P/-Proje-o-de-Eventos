@@ -17,4 +17,13 @@ import { EventsChartComponent } from '../events-chart/events-chart.component';
   templateUrl: './event-projection-page.component.html',
   styleUrl: './event-projection-page.component.scss',
 })
-export class EventProjectionPageComponent {}
+export class EventProjectionPageComponent {
+
+  returnTodayEvents(){
+    return 3
+  }
+
+  setEntities(entities: number) {
+    console.log('Entities set to:', entities);
+  }
+}

@@ -8,12 +8,23 @@
   </section>
   <section class="input-form">
     <mat-form-field class="example-full-width">
-        <mat-label>Telephone</mat-label>
-        <mat-icon matTextPrefix >mode_edit</mat-icon>
-        <input type="tel" matInput >
-        <span matSuffix > Entidades </span>
-        <mat-hint align="end">Novos eventos para hoje:</mat-hint>
-      </mat-form-field>
-
+      <mat-icon
+        matTextPrefix
+        (click)="emitEntities()"
+        (keydown)="emitEntities()"
+        tabindex="0"
+        >play_arrow</mat-icon
+      >
+      <input
+        type="number"
+        matInput
+        min="1"
+        pattern="^[0-9]*$"
+        [(ngModel)]="entitiesModel"
+        (keydown)="onKeyDown($event)"
+      />
+      <span matSuffix> Entidades </span>
+      <mat-hint align="end">Novos eventos para hoje: {{ todayEvents() }}</mat-hint>
+    </mat-form-field>
   </section>
 </main>
