@@ -3,6 +3,92 @@
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 
+
+
+/* Reset CSS Básico */
+
+/* Remove margens e preenchimentos padrão */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset para elementos mais antigos */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* Define o box-sizing para border-box para um modelo de caixa mais intuitivo */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* Garante que a altura da página ocupe toda a viewport */
+body {
+  line-height: 1; /* Define uma linha base de altura */
+}
+
+/* Remove estilos de lista padrão */
+ol, ul {
+  list-style: none;
+}
+
+/* Remove aspas de blockquotes e quotes */
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* Remove bordas de tabelas (se necessário, adicione bordas específicas depois) */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Estilos básicos para links (pode ser ajustado conforme necessário) */
+a {
+  text-decoration: none; /* Remove sublinhado por padrão */
+  color: inherit; /* Herda a cor do elemento pai */
+}
+
+/* Remove o outline padrão em elementos focados (considere a acessibilidade ao fazer isso) */
+/*
+:focus {
+  outline: 0;
+}
+*/
+
+/* Melhora a renderização de texto */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
 html {
   @include mat.theme((
     color: (
