@@ -4,12 +4,12 @@ import { MaterialModule } from '../../../../shared/material.module';
 
 export interface Ciclo {
   selecionado: boolean;
-  statusIcone: string; // 'arrow_upward' ou 'arrow_downward'
-  statusCor: string; // 'green', 'orange', 'red', ou outra cor CSS válida
+  statusIcone: string; 
+  statusCor: string; 
   nome: string;
-  selecionadosDisponiveis: string; // Ex: '1/1', '6/195'
+  selecionadosDisponiveis: string; 
   eventosHoje: number;
-  ativo?: boolean; // Para distinguir os checkboxes preenchidos dos vazios mas clicáveis
+  ativo?: boolean; 
 }
 @Component({
   selector: 'app-cycle-selector',
@@ -30,7 +30,7 @@ export class CycleSelectorComponent {
     'nome',
     'selecionadosDisponiveis',
     'eventosHoje',
-  ]; // Sem a coluna 'selecionar'
+  ]; 
 
   ciclosComEntidades: Ciclo[] = [
     {
@@ -79,7 +79,7 @@ export class CycleSelectorComponent {
       nome: 'Dúvidas LGPD',
       selecionadosDisponiveis: '',
       eventosHoje: NaN,
-    }, // Usando NaN para não mostrar '0' se a coluna for numérica
+    }, 
     {
       selecionado: false,
       statusIcone: 'arrow_upward',
@@ -134,9 +134,7 @@ export class CycleSelectorComponent {
     return this.ciclosSemEntidades.length;
   }
 
-  // Função para lidar com a mudança de estado do checkbox (opcional, para interatividade)
   toggleSelecao(ciclo: Ciclo): void {
     ciclo.selecionado = !ciclo.selecionado;
-    // Adicione qualquer lógica adicional aqui, como atualizar o backend
   }
 }
