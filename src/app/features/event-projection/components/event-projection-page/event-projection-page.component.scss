@@ -1,8 +1,10 @@
+@import '../../../../../styles/_colors.scss';
+
 .event-projection-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 3rem 0;
   width: 50.188;
 
   .header-container {
@@ -17,6 +19,16 @@
     flex-direction: column;
     align-items: center;
     width: 43.375rem;
+    padding: 1rem 0;
+
+    .entity-input__section, .cycle-selector__section{
+      padding: 1rem 0;
+      border-bottom: solid 2px $color-light-gray;
+    }
+
+    .events-chart__section{
+      padding: 1rem 0;
+    }
   }
 
   .footer {
@@ -25,5 +37,6 @@
     align-items: center;
     margin-top: 20px;
     width: 43.375rem;
+    gap: 1rem;
   }
 }
