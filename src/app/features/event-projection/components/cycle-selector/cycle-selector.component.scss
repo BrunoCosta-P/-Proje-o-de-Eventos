@@ -1,0 +1,107 @@
+.ciclos-container {
+    font-family: 'Roboto', sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 900px;
+    margin: auto;
+}
+
+.section-header {
+    font-size: 14px;
+    color: #5f6368;
+    padding: 16px 0px 8px 0px;
+    font-weight: 500;
+}
+
+.section-header-margin {
+    margin-top: 20px;
+}
+
+.ciclos-table {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+    th.mat-header-cell {
+        font-size: 12px;
+        font-weight: 500;
+        color: #5f6368;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        border-bottom: none;
+    }
+
+    td.mat-cell,
+    th.mat-header-cell {
+        padding-left: 16px;
+        padding-right: 16px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    td.mat-cell:first-child,
+    th.mat-header-cell:first-child {
+        padding-left: 24px;
+    }
+
+    td.mat-cell:last-child,
+    th.mat-header-cell:last-child {
+        padding-right: 24px;
+    }
+
+
+    .mat-column-selecionar {
+        flex: 0 0 50px;
+    }
+
+    .mat-column-status {
+        flex: 0 0 50px;
+    }
+
+    .mat-column-nome {
+        flex: 1 1 auto;
+        font-weight: 500;
+        color: #3c4043;
+    }
+
+    .mat-column-selecionadosDisponiveis,
+    .mat-column-eventosHoje {
+        flex: 0 0 150px;
+        text-align: right;
+        color: #3c4043;
+    }
+
+    .align-right {
+        text-align: right;
+    }
+
+    ::ng-deep .mat-checkbox-checked.checked-active .mat-checkbox-background {
+        background-color: rgb(76, 175, 80) !important;
+    }
+
+    ::ng-deep .checkbox-faded .mat-checkbox-frame {
+        border-color: rgba(0, 0, 0, 0.26) !important;
+    }
+
+    ::ng-deep .checkbox-faded.mat-checkbox-checked .mat-checkbox-background {
+        background-color: rgba(0, 0, 0, 0.26) !important;
+    }
+
+
+    tr.mat-row:last-child td.mat-cell {
+        border-bottom: none;
+    }
+}
+
+.ciclos-table:nth-of-type(2) {
+
+    th.mat-header-cell {
+
+        display: none;
+    }
+
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+td.mat-cell mat-icon,
+td.mat-cell mat-checkbox {
+    vertical-align: middle;
+}
