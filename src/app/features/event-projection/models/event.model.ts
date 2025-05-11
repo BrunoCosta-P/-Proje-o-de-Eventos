@@ -28,3 +28,8 @@ export interface EventsProjectionData {
   eventsProjection: DailyEvent[];
   cycles: Cycle[];
 }
+
+export interface EventsAPIResponse {
+  eventsProjection: DailyEvent[];
+  cycles: Cycle[];
+}
