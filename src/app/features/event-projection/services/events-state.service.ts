@@ -77,6 +77,22 @@ export class EventsStateService {
     return 0;
   });
 
+  public onCheckboxChange(cycle: any): void {
+    this.cyclesSignal.update((cycles) => {
+      const cycleIndex = cycles.findIndex((c) => c.name === cycle.name);
+      if (cycleIndex !== -1) {
+        const updatedCycles = [...cycles];
+        updatedCycles[cycleIndex] = {
+          ...updatedCycles[cycleIndex],
+          selected: !updatedCycles[cycleIndex].selected,
+        };
+        return updatedCycles;
+      }
+      return cycles;
+    });
+
+  }
+
   public updateEntitiesModel(newValue: number): void {
     const numValue = Number(newValue);
     if (!isNaN(numValue) && numValue >= 0) {
@@ -89,6 +105,27 @@ export class EventsStateService {
         this.entitiesModelSignal()
       );
     }
+  }
+
+  public subtractEntitiesFromSelectedCycles(): void {
+    const entitiesToSubtract = this.entitiesModelSignal();
+    this.cyclesSignal.update((cycles) =>
+      cycles.map((cycle) =>
+        cycle.selected
+          ? {
+              ...cycle,
+              availableEntities: Math.max(
+                0,
+                (cycle.availableEntities || 0) - entitiesToSubtract
+              ),
+            }
+          : cycle
+      )
+    );
+  }
+
+  public startNewEntity(): void {
+    this.subtractEntitiesFromSelectedCycles();
   }
 
   public loadEventsData(): void {
