@@ -39,12 +39,13 @@ export class EventsStateService {
 
   public readonly categorizedCycles: Signal<CategorizedCycles> = computed(
     () => {
+      const priorityOrder: Record<string, number> = { HIGH: 1, MEDIUM: 2, LOW: 3 };
       const currentCycles = this.cyclesSignal();
       if (!Array.isArray(currentCycles)) {
         return { withEntities: [], withoutEntities: [] };
       }
-      return currentCycles.reduce(
-        (acc, cycle) => {
+      const categorized = currentCycles.reduce(
+        (acc: { withEntities: Cycle[]; withoutEntities: Cycle[] }, cycle: Cycle) => {
           if (cycle.availableEntities > 0) {
             acc.withEntities.push(cycle);
           } else {
@@ -54,6 +55,13 @@ export class EventsStateService {
         },
         { withEntities: [] as Cycle[], withoutEntities: [] as Cycle[] }
       );
+      categorized.withEntities.sort(
+        (a: Cycle, b: Cycle) => priorityOrder[a.priority] - priorityOrder[b.priority]
+      );
+      categorized.withoutEntities.sort(
+        (a: Cycle, b: Cycle) => priorityOrder[a.priority] - priorityOrder[b.priority]
+      );
+      return categorized;
     }
   );
 
