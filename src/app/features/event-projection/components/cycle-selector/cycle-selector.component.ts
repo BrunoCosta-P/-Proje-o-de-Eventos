@@ -1,16 +1,9 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
+import { EventActivity } from '../../models/event.model';
+import { EventsStateService } from '../../services/events-state.service';
 
-export interface Ciclo {
-  selecionado: boolean;
-  statusIcone: string; 
-  statusCor: string; 
-  nome: string;
-  selecionadosDisponiveis: string; 
-  eventosHoje: number;
-  ativo?: boolean; 
-}
 @Component({
   selector: 'app-cycle-selector',
   imports: [SharedModule, MaterialModule],
@@ -18,6 +11,8 @@ export interface Ciclo {
   styleUrl: './cycle-selector.component.scss',
 })
 export class CycleSelectorComponent {
+  public readonly eventsState: EventsStateService;
+
   displayedColumnsComEntidades: string[] = [
     'selecionar',
     'status',
@@ -30,111 +25,41 @@ export class CycleSelectorComponent {
     'nome',
     'selecionadosDisponiveis',
     'eventosHoje',
-  ]; 
-
-  ciclosComEntidades: Ciclo[] = [
-    {
-      selecionado: true,
-      ativo: true,
-      statusIcone: 'arrow_upward',
-      statusCor: 'rgb(76, 175, 80)',
-      nome: 'Prospecção outbound',
-      selecionadosDisponiveis: '1/1',
-      eventosHoje: 4,
-    },
-    {
-      selecionado: true,
-      ativo: true,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Credenciamento',
-      selecionadosDisponiveis: '3/1',
-      eventosHoje: 12,
-    },
-    {
-      selecionado: true,
-      ativo: true,
-      statusIcone: 'arrow_upward',
-      statusCor: 'rgb(76, 175, 80)',
-      nome: 'Outbound Geral',
-      selecionadosDisponiveis: '6/195',
-      eventosHoje: 18,
-    },
-    {
-      selecionado: false,
-      ativo: false,
-      statusIcone: 'arrow_downward',
-      statusCor: 'rgb(33, 150, 243)',
-      nome: 'ciclo teste de exclusão',
-      selecionadosDisponiveis: '0/2',
-      eventosHoje: 0,
-    },
-  ];
-
-  ciclosSemEntidades: Ciclo[] = [
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'red',
-      nome: 'Dúvidas LGPD',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    }, 
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Ciclo Inbound',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    },
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Ciclo Salesforce',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    },
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Indústria Outbound',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    },
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Ciclo automático',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    },
-    {
-      selecionado: false,
-      statusIcone: 'arrow_upward',
-      statusCor: 'orange',
-      nome: 'Midsize',
-      selecionadosDisponiveis: '',
-      eventosHoje: NaN,
-    },
   ];
 
   public isNaN = isNaN;
 
-  constructor() {}
-
-  getTotalCiclosComEntidades(): number {
-    return this.ciclosComEntidades.length;
+  constructor(eventsState: EventsStateService) {
+    this.eventsState = eventsState;
   }
 
-  getTotalCiclosSemEntidades(): number {
-    return this.ciclosSemEntidades.length;
+
+
+  getTotalCyclesWithEntities(): number {
+    return this.eventsState.categorizedCycles().withEntities.length;
   }
 
-  toggleSelecao(ciclo: Ciclo): void {
-    ciclo.selecionado = !ciclo.selecionado;
+  getTotalCyclesWithoutEntities(): number {
+    return this.eventsState.categorizedCycles().withoutEntities.length;
+  }
+
+  get entitiesModelSignalValue() {
+    return this.eventsState.entitiesModel();
+  }
+
+  getEventsForToday(structure: EventActivity[]): number {
+    const today = new Date();
+    const todayDay = today.getDay();
+    const eventsToday = structure.filter((event) => event.day === todayDay);
+    if (eventsToday.length > 0) {
+      return (
+        eventsToday[0].meetings +
+        eventsToday[0].emails +
+        eventsToday[0].calls +
+        eventsToday[0].follows
+      );
+    }
+
+    return 0;
   }
 }
