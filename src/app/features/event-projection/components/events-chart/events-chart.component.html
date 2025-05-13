@@ -1,19 +1,27 @@
 <section aria-labelledby="future-events-forecast-title">
   <header>
     <h2 id="future-events-forecast-title">Previsão de eventos futuros</h2>
-    <p>A previsão inclui eventos dos ciclos relacionados às entidades e é atualizada sempre que novas entidades forem iniciadas.</p>
+    <p>
+      A previsão inclui eventos dos ciclos relacionados às entidades e é
+      atualizada sempre que novas entidades forem iniciadas.
+    </p>
   </header>
-  <figure class="chart-container" aria-label="Stacked bar chart showing the forecasted quantity of events for the upcoming days, categorized by type: Meetings, Messages, Checkpoints, and Exploration.">
+  <figure
+    class="chart-container"
+    aria-label="Stacked bar chart showing the forecasted quantity of events for the upcoming days, categorized by type: Meetings, Messages, Checkpoints, and Exploration."
+  >
     <apx-chart
+      #chart
       [series]="chartOptions.series!"
       [chart]="chartOptions.chart!"
-      [dataLabels]="chartOptions.dataLabels!"
-      [plotOptions]="chartOptions.plotOptions!"
-      [responsive]="chartOptions.responsive!"
       [xaxis]="chartOptions.xaxis!"
       [yaxis]="chartOptions.yaxis!"
+      [dataLabels]="chartOptions.dataLabels!"
+      [plotOptions]="chartOptions.plotOptions!"
       [legend]="chartOptions.legend!"
       [fill]="chartOptions.fill!"
+      [responsive]="chartOptions.responsive!"
+      [noData]="chartOptions.noData!"
     ></apx-chart>
-    </figure>
+  </figure>
 </section>
