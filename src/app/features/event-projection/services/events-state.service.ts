@@ -90,7 +90,6 @@ export class EventsStateService {
       }
       return cycles;
     });
-
   }
 
   public updateEntitiesModel(newValue: number): void {
@@ -126,6 +125,7 @@ export class EventsStateService {
 
   public startNewEntity(): void {
     this.subtractEntitiesFromSelectedCycles();
+    this.addSelectedCyclesToEventsProjection();
   }
 
   public loadEventsData(): void {
@@ -152,6 +152,50 @@ export class EventsStateService {
         );
         this.isLoadingSignal.set(false);
       },
+    });
+  }
+
+  public addSelectedCyclesToEventsProjection(): void {
+    const selectedCycles = this.cyclesSignal().filter(cycle => cycle.selected);
+
+    if (selectedCycles.length === 0) {
+      return;
+    }
+
+    this.existingEventsProjectionSignal.update(existing => {
+      const updatedMap = new Map<number, DailyEvent>();
+      existing.forEach(ev => updatedMap.set(ev.day, { ...ev, events: { ...ev.events } }));
+
+      selectedCycles.forEach(cycle => {
+        cycle.structure.forEach(dayEvent => {
+          const existingEvent = updatedMap.get(dayEvent.day);
+          if (existingEvent) {
+            updatedMap.set(dayEvent.day, {
+              ...existingEvent,
+              events: {
+                meetings: (existingEvent.events.meetings || 0) + (dayEvent.meetings || 0),
+                emails: (existingEvent.events.emails || 0) + (dayEvent.emails || 0),
+                calls: (existingEvent.events.calls || 0) + (dayEvent.calls || 0),
+                follows: (existingEvent.events.follows || 0) + (dayEvent.follows || 0),
+                day: dayEvent.day,
+              },
+            });
+          } else {
+            updatedMap.set(dayEvent.day, {
+              day: dayEvent.day,
+              events: {
+                meetings: dayEvent.meetings || 0,
+                emails: dayEvent.emails || 0,
+                calls: dayEvent.calls || 0,
+                follows: dayEvent.follows || 0,
+                day: dayEvent.day,
+              },
+            });
+          }
+        });
+      });
+
+      return Array.from(updatedMap.values()).sort((a, b) => a.day - b.day);
     });
   }
 }
