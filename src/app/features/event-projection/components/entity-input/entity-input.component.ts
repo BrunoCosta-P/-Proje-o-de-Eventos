@@ -1,21 +1,24 @@
-import { Component, input, output } from '@angular/core';
+// entity-input.component.ts
+import { Component, input } from '@angular/core'; // Removido 'inject' se não for usar em outros lugares
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
+import { EventsStateService } from '../../services/events-state.service';
 
 @Component({
   selector: 'app-entity-input',
-  imports: [MaterialModule, SharedModule],
+  standalone: true,
+  imports: [MaterialModule, SharedModule, FormsModule],
   templateUrl: './entity-input.component.html',
   styleUrl: './entity-input.component.scss',
 })
 export class EntityInputComponent {
-  entitiesModel: number = 1;
-
-  outputEntities = output<number>();
-
   todayEvents = input<number>();
-  
-  constructor() {}
+  public readonly eventsState: EventsStateService;
+
+  constructor(eventsState: EventsStateService) {
+    this.eventsState = eventsState;
+  }
 
   onKeyDown(event: KeyboardEvent): void {
     const DIT_ALLOWED_KEYS = [
@@ -43,7 +46,8 @@ export class EntityInputComponent {
     }
   }
 
-  emitEntities() {
-    this.outputEntities.emit(this.entitiesModel);
+  onEntitiesChange(newValue: string | number): void {
+    const numericValue = Number(newValue);
+    this.eventsState.updateEntitiesModel(numericValue);
   }
 }

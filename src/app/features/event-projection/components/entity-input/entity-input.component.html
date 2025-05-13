@@ -10,17 +10,18 @@
     <mat-form-field class="example-full-width">
       <mat-icon
         matTextPrefix
-        (click)="emitEntities()"
-        (keydown)="emitEntities()"
+        (click)="eventsState.entitiesModel()"
+        (keydown)="eventsState.entitiesModel()"
         tabindex="0"
         >play_arrow</mat-icon
       >
       <input
         type="number"
         matInput
+        (ngModelChange)="onEntitiesChange($event)"
         min="1"
         pattern="^[0-9]*$"
-        [(ngModel)]="entitiesModel"
+        [ngModel]="eventsState.entitiesModel()"
         (keydown)="onKeyDown($event)"
       />
       <span matSuffix> Entidades </span>
