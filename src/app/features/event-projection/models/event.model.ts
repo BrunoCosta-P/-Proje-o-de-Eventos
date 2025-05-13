@@ -3,6 +3,7 @@ export interface EventActivity {
   emails: number;
   calls: number;
   follows: number;
+  day: number;
 }
 
 export interface DailyEvent {
@@ -32,4 +33,9 @@ export interface EventsProjectionData {
 export interface EventsAPIResponse {
   eventsProjection: DailyEvent[];
   cycles: Cycle[];
+}
+
+export interface CategorizedCycles {
+  withEntities: Cycle[];
+  withoutEntities: Cycle[];
 }
