@@ -3,10 +3,11 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
 import { EventActivity } from '../../models/event.model';
 import { EventsStateService } from '../../services/events-state.service';
+import { IconColorPipe } from '../../../../shared/pipes/color.pipe';
 
 @Component({
   selector: 'app-cycle-selector',
-  imports: [SharedModule, MaterialModule],
+  imports: [SharedModule, MaterialModule, IconColorPipe],
   templateUrl: './cycle-selector.component.html',
   styleUrl: './cycle-selector.component.scss',
 })
