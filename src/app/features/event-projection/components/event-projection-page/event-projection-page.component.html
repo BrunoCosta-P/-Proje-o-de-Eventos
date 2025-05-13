@@ -7,10 +7,10 @@
   </header>
   <main class="main-container">
     <section class="entity-input__section">
-      <app-entity-input [todayEvents]="returnTodayEvents()" (outputEntities)="setEntities($event)"></app-entity-input>
+      <app-entity-input [todayEvents]="returnTodayEvents()"></app-entity-input>
     </section>
     <section class="cycle-selector__section">
-      <app-cycle-selector></app-cycle-selector>
+      <app-cycle-selector [categorizedCycles]="categorizedCycles"></app-cycle-selector>
     </section>
     <section class="events-chart__section">
       <app-events-chart></app-events-chart>
