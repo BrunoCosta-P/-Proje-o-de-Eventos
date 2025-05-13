@@ -81,10 +81,6 @@ export class EventsStateService {
     const numValue = Number(newValue);
     if (!isNaN(numValue) && numValue >= 0) {
       this.entitiesModelSignal.set(numValue);
-      console.log(
-        'EventsStateService: entitiesModel atualizado para',
-        numValue
-      );
     } else {
       console.warn(
         'EventsStateService: Valor inválido fornecido para entitiesModel:',
