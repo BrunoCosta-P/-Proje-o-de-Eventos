@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
 import { EntityInputComponent } from '../entity-input/entity-input.component';
 import { CycleSelectorComponent } from '../cycle-selector/cycle-selector.component';
 import { EventsChartComponent } from '../events-chart/events-chart.component';
-import { EventsService } from '../../../../core/services/events.service';
 import { EventsStateService } from '../../services/events-state.service';
 import {
   EventsProjectionData,

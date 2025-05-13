@@ -8,11 +8,11 @@ import {
   untracked,
   AfterViewInit,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WorkdaysService } from '../../services/workdays.service';
 import { EventsStateService } from '../../services/events-state.service';
-import { DailyEvent, EventActivity } from '../../models/event.model'; // Importe DailyEvent e EventActivity
 
 import {
   ApexAxisChartSeries,
@@ -26,12 +26,11 @@ import {
   ApexLegend,
   ApexFill,
   NgApexchartsModule,
-  ApexNoData, // Importar ApexNoData
+  ApexNoData, 
 } from 'ng-apexcharts';
 
-// Sua definição de ChartOptions (certifique-se que inclui noData opcional)
 export type ChartOptions = {
-  series?: ApexAxisChartSeries; // Tornando opcional para Partial<> funcionar bem
+  series?: ApexAxisChartSeries; 
   chart?: ApexChart;
   dataLabels?: ApexDataLabels;
   plotOptions?: ApexPlotOptions;
@@ -40,7 +39,7 @@ export type ChartOptions = {
   yaxis?: ApexYAxis;
   legend?: ApexLegend;
   fill?: ApexFill;
-  noData?: ApexNoData; // Adicionado aqui
+  noData?: ApexNoData; 
 };
 
 @Component({
@@ -53,17 +52,21 @@ export type ChartOptions = {
 })
 export class EventsChartComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('chart') chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>; // Partial é bom para construção gradual
+  public chartOptions: Partial<ChartOptions>; 
 
   private readonly workdaysService = inject(WorkdaysService);
   private readonly eventsState = inject(EventsStateService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private displayWorkdays: string[] = [];
   private orderedWorkdayNumbers: number[] = [];
   private chartReady = false;
 
   constructor() {
-    // Inicialização base de chartOptions
+    this.displayWorkdays = this.workdaysService.getOrderedWorkdays();
+    this.orderedWorkdayNumbers =
+      this.workdaysService.getOrderedWorkdayNumbers();
+
     this.chartOptions = {
       series: [],
       chart: {
@@ -86,7 +89,6 @@ export class EventsChartComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       ],
       noData: {
-        // <<< noData no nível correto
         text: 'Carregando gráfico...',
         align: 'center',
         verticalAlign: 'middle',
@@ -125,6 +127,7 @@ export class EventsChartComponent implements OnInit, AfterViewInit, OnDestroy {
             this.orderedWorkdayNumbers?.length > 0 &&
             this.displayWorkdays?.length > 0
           ) {
+
             const meetingsData = this.orderedWorkdayNumbers.map(
               (dayNum) =>
                 activities.find((a) => a.day === dayNum)?.events.meetings || 0
@@ -180,6 +183,7 @@ export class EventsChartComponent implements OnInit, AfterViewInit, OnDestroy {
             noData: { text: currentNoDataText },
           });
         }
+        this.cdr.markForCheck();
       });
     });
   }
@@ -214,7 +218,5 @@ export class EventsChartComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    /* Effects são limpos automaticamente */
-  }
+  ngOnDestroy(): void {}
 }
