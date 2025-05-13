@@ -1,5 +1,4 @@
-// entity-input.component.ts
-import { Component, input } from '@angular/core'; // Removido 'inject' se não for usar em outros lugares
+import { Component, input } from '@angular/core'; 
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';

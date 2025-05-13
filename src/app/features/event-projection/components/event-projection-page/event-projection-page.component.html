@@ -10,7 +10,7 @@
       <app-entity-input [todayEvents]="returnTodayEvents()"></app-entity-input>
     </section>
     <section class="cycle-selector__section">
-      <app-cycle-selector [categorizedCycles]="categorizedCycles"></app-cycle-selector>
+      <app-cycle-selector></app-cycle-selector>
     </section>
     <section class="events-chart__section">
       <app-events-chart></app-events-chart>
@@ -25,6 +25,7 @@
       extended
       class="footer-btn-start"
       aria-label="Iniciar novas Entidades"
+      (click)="this.eventsState.startNewEntity()"
     >
       Iniciar novas Entidades
     </button>

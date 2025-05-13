@@ -4,8 +4,13 @@ import { MaterialModule } from '../../../../shared/material.module';
 import { EntityInputComponent } from '../entity-input/entity-input.component';
 import { CycleSelectorComponent } from '../cycle-selector/cycle-selector.component';
 import { EventsChartComponent } from '../events-chart/events-chart.component';
-import { EventsService } from '../../../../core/services/events.service'; 
-import { EventsProjectionData } from '../../models/event.model'; 
+import { EventsService } from '../../../../core/services/events.service';
+import { EventsStateService } from '../../services/events-state.service';
+import {
+  EventsProjectionData,
+  DailyEvent,
+  Cycle,
+} from '../../models/event.model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -20,21 +25,22 @@ import { Observable } from 'rxjs';
   templateUrl: './event-projection-page.component.html',
   styleUrl: './event-projection-page.component.scss',
 })
-export class EventProjectionPageComponent implements OnInit {
+export class EventProjectionPageComponent {
+  public readonly eventsState!: EventsStateService;
   public eventsData$?: Observable<EventsProjectionData>;
-  public resolvedEventsData?: EventsProjectionData;
+  public existingEventsProjectio?: DailyEvent[];
+  public cycles?: Cycle[];
+  public categorizedCycles: {
+    withEntities: Cycle[];
+    withoutEntities: Cycle[];
+  } = {
+    withEntities: [],
+    withoutEntities: [],
+  };
 
-  constructor(private readonly eventsService: EventsService) {}
-
-  ngOnInit(): void {
-    this.loadEventsData();
+  constructor(eventsState: EventsStateService) {
+    this.eventsState = eventsState;
   }
-
-  loadEventsData(): void {
-    this.eventsService.getEventsData().subscribe((data) => {
-      console.log("data", data);
-  })
-}
 
   returnTodayEvents() {
     return 3;
