@@ -24,8 +24,6 @@ export class CycleSelectorComponent {
   displayedColumnsSemEntidades: string[] = [
     'status',
     'nome',
-    'selecionadosDisponiveis',
-    'eventosHoje',
   ];
 
   public isNaN = isNaN;

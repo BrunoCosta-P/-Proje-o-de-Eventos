@@ -37,35 +37,87 @@ export class EventsStateService {
   public readonly entitiesModel: Signal<number> =
     this.entitiesModelSignal.asReadonly();
 
+  constructor() {}
+
+  private _autoSelectHighPriorityCycles(): void {
+    const currentCycles = this.cyclesSignal();
+    if (!Array.isArray(currentCycles) || currentCycles.length === 0) {
+      return;
+    }
+
+    let cyclesWereModified = false;
+    const updatedCycles = currentCycles.map((cycle) => {
+      if (
+        cycle.availableEntities > 0 &&
+        cycle.priority === 'HIGH' &&
+        !cycle.selected 
+      ) {
+        cyclesWereModified = true;
+        return { ...cycle, selected: true }; 
+      }
+      return cycle; 
+    });
+
+    if (cyclesWereModified) {
+      this.cyclesSignal.set(updatedCycles); 
+      console.log(
+        'EventsStateService: Ciclos de alta prioridade auto-selecionados.'
+      );
+    }
+  }
+
   public readonly categorizedCycles: Signal<CategorizedCycles> = computed(
     () => {
-      const priorityOrder: Record<string, number> = { HIGH: 1, MEDIUM: 2, LOW: 3 };
-      const currentCycles = this.cyclesSignal();
+
+
+      const priorityOrder: Record<string, number> = {
+        HIGH: 1,
+        MEDIUM: 2,
+        LOW: 3,
+      };
+      const currentCycles = this.cyclesSignal(); 
+
       if (!Array.isArray(currentCycles)) {
+        console.warn(
+          'EventsStateService: currentCycles não é um array em categorizedCycles.'
+        );
         return { withEntities: [], withoutEntities: [] };
       }
-      const categorized = currentCycles.reduce(
-        (acc: { withEntities: Cycle[]; withoutEntities: Cycle[] }, cycle: Cycle) => {
-          if (cycle.availableEntities > 0) {
-            acc.withEntities.push(cycle);
-          } else {
-            acc.withoutEntities.push(cycle);
-          }
-          return acc;
-        },
-        { withEntities: [] as Cycle[], withoutEntities: [] as Cycle[] }
-      );
+
+      const categorized: CategorizedCycles = {
+        withEntities: [],
+        withoutEntities: [],
+      };
+
+      currentCycles.forEach((cycle) => {
+
+        if (cycle.availableEntities > 0) {
+          categorized.withEntities.push(cycle); 
+        } else {
+          categorized.withoutEntities.push(cycle); 
+        }
+      });
+
       categorized.withEntities.sort(
-        (a: Cycle, b: Cycle) => priorityOrder[a.priority] - priorityOrder[b.priority]
+        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
       );
       categorized.withoutEntities.sort(
-        (a: Cycle, b: Cycle) => priorityOrder[a.priority] - priorityOrder[b.priority]
+        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+      );
+
+      console.log(
+        'EventsStateService: categorizedCycles recalculado. Entidades com ciclos:',
+        categorized.withEntities.map((c) => ({
+          name: c.name,
+          selected: c.selected,
+        })) 
       );
       return categorized;
     }
   );
 
   public readonly eventsForTodayCount: Signal<number> = computed(() => {
+
     const structure = this.existingEventsProjectionSignal();
     const today = new Date();
     const todayDay = today.getDay();
@@ -73,7 +125,7 @@ export class EventsStateService {
       (event) => event.day === todayDay
     );
 
-    if (eventsTodayArray.length > 0) {
+    if (eventsTodayArray.length > 0 && eventsTodayArray[0].events) {
       const todayEvent = eventsTodayArray[0].events;
       return (
         (todayEvent.meetings || 0) +
@@ -85,18 +137,23 @@ export class EventsStateService {
     return 0;
   });
 
-  public onCheckboxChange(cycle: any): void {
-    this.cyclesSignal.update((cycles) => {
-      const cycleIndex = cycles.findIndex((c) => c.name === cycle.name);
+
+  public onCheckboxChange(changedCycleFromTemplate: Cycle): void {
+    this.cyclesSignal.update((currentCyclesInSignal) => {
+
+      const cycleIndex = currentCyclesInSignal.findIndex(
+        (c) => c.name === changedCycleFromTemplate.name
+      );
+
       if (cycleIndex !== -1) {
-        const updatedCycles = [...cycles];
-        updatedCycles[cycleIndex] = {
-          ...updatedCycles[cycleIndex],
-          selected: !updatedCycles[cycleIndex].selected,
+        const newCyclesArray = [...currentCyclesInSignal]; 
+        newCyclesArray[cycleIndex] = {
+          ...currentCyclesInSignal[cycleIndex], 
+          selected: changedCycleFromTemplate.selected, 
         };
-        return updatedCycles;
+        return newCyclesArray; 
       }
-      return cycles;
+      return currentCyclesInSignal; 
     });
   }
 
@@ -116,6 +173,8 @@ export class EventsStateService {
 
   public subtractEntitiesFromSelectedCycles(): void {
     const entitiesToSubtract = this.entitiesModelSignal();
+    if (entitiesToSubtract <= 0) return; 
+
     this.cyclesSignal.update((cycles) =>
       cycles.map((cycle) =>
         cycle.selected
@@ -134,6 +193,13 @@ export class EventsStateService {
   public startNewEntity(): void {
     this.subtractEntitiesFromSelectedCycles();
     this.addSelectedCyclesToEventsProjection();
+    this.deselectAllCycles();
+  }
+
+  public deselectAllCycles(): void {
+    this.cyclesSignal.update(cycles =>
+      cycles.map(cycle => cycle.selected ? { ...cycle, selected: false } : cycle)
+    );
   }
 
   public loadEventsData(): void {
@@ -143,11 +209,16 @@ export class EventsStateService {
     this.eventsService.getEventsData().subscribe({
       next: (data: EventsProjectionData) => {
         const activities: DailyEvent[] = data.eventsProjection
-          ? data.eventsProjection.map((dailyEvent) => dailyEvent)
+          ? data.eventsProjection.map((dailyEvent) => ({ ...dailyEvent })) 
           : [];
 
         this.existingEventsProjectionSignal.set(activities);
-        this.cyclesSignal.set(data.cycles || []);
+        this.cyclesSignal.set(
+          data.cycles ? data.cycles.map((cycle) => ({ ...cycle })) : []
+        ); 
+
+        this._autoSelectHighPriorityCycles();
+
         this.isLoadingSignal.set(false);
       },
       error: (err) => {
@@ -164,45 +235,49 @@ export class EventsStateService {
   }
 
   public addSelectedCyclesToEventsProjection(): void {
-    const selectedCycles = this.cyclesSignal().filter(cycle => cycle.selected);
+    const selectedCycles = this.cyclesSignal().filter(
+      (cycle) => cycle.selected
+    );
 
     if (selectedCycles.length === 0) {
       return;
     }
 
-    this.existingEventsProjectionSignal.update(existing => {
+    this.existingEventsProjectionSignal.update((existingProjection) => {
       const updatedMap = new Map<number, DailyEvent>();
-      existing.forEach(ev => updatedMap.set(ev.day, { ...ev, events: { ...ev.events } }));
+      existingProjection.forEach(
+        (ev) => updatedMap.set(ev.day, JSON.parse(JSON.stringify(ev))) 
+      );
 
-      selectedCycles.forEach(cycle => {
-        cycle.structure.forEach(dayEvent => {
-          const existingEvent = updatedMap.get(dayEvent.day);
-          if (existingEvent) {
-            updatedMap.set(dayEvent.day, {
-              ...existingEvent,
-              events: {
-                meetings: (existingEvent.events.meetings || 0) + (dayEvent.meetings || 0),
-                emails: (existingEvent.events.emails || 0) + (dayEvent.emails || 0),
-                calls: (existingEvent.events.calls || 0) + (dayEvent.calls || 0),
-                follows: (existingEvent.events.follows || 0) + (dayEvent.follows || 0),
+      selectedCycles.forEach((cycle) => {
+        if (cycle.structure && Array.isArray(cycle.structure)) {
+          cycle.structure.forEach((dayEvent) => {
+            const existingDayData = updatedMap.get(dayEvent.day);
+            if (existingDayData) {
+              existingDayData.events.meetings =
+                (existingDayData.events.meetings || 0) +
+                (dayEvent.meetings || 0);
+              existingDayData.events.emails =
+                (existingDayData.events.emails || 0) + (dayEvent.emails || 0);
+              existingDayData.events.calls =
+                (existingDayData.events.calls || 0) + (dayEvent.calls || 0);
+              existingDayData.events.follows =
+                (existingDayData.events.follows || 0) + (dayEvent.follows || 0);
+            } else {
+              updatedMap.set(dayEvent.day, {
                 day: dayEvent.day,
-              },
-            });
-          } else {
-            updatedMap.set(dayEvent.day, {
-              day: dayEvent.day,
-              events: {
-                meetings: dayEvent.meetings || 0,
-                emails: dayEvent.emails || 0,
-                calls: dayEvent.calls || 0,
-                follows: dayEvent.follows || 0,
-                day: dayEvent.day,
-              },
-            });
-          }
-        });
+                events: {
+                  meetings: dayEvent.meetings || 0,
+                  emails: dayEvent.emails || 0,
+                  calls: dayEvent.calls || 0,
+                  follows: dayEvent.follows || 0,
+                  day: dayEvent.day, 
+                },
+              });
+            }
+          });
+        }
       });
-
       return Array.from(updatedMap.values()).sort((a, b) => a.day - b.day);
     });
   }
