@@ -28,3 +28,19 @@
     padding-top: $rem;
     padding-bottom: $rem;
 }
+
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: null) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+
+  @if $gap {
+    gap: $gap;
+  }
+}
+
+@mixin container-width($width) {
+  max-width: $width;
+  width: 100%;
+}

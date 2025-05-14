@@ -44,8 +44,4 @@ export class EventProjectionPageComponent {
   returnTodayEvents() {
     return 3;
   }
-
-  setEntities(entities: number) {
-    console.log('Entities set to:', entities);
-  }
 }

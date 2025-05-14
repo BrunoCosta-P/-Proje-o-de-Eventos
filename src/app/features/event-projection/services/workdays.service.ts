@@ -36,12 +36,11 @@ export class WorkdaysService {
 
   getOrderedWorkdays(): string[] {
     const todayDate = new Date();
-    const currentDayNumeric = todayDate.getDay(); 
+    const currentDayNumeric = todayDate.getDay();
     let orderedDays: string[] = [];
 
     if (currentDayNumeric >= 1 && currentDayNumeric <= 5) {
       orderedDays.push('Hoje');
-
 
       const currentWorkdayListIndex = currentDayNumeric - 1;
 
@@ -57,14 +56,14 @@ export class WorkdaysService {
     return orderedDays;
   }
 
-   getOrderedWorkdayNumbers(): number[] {
+  getOrderedWorkdayNumbers(): number[] {
     const todayDate = new Date();
-    const currentDayNumeric = todayDate.getDay(); 
+    const currentDayNumeric = todayDate.getDay();
 
     let orderedNumbers: number[] = [];
 
     if (currentDayNumeric >= 1 && currentDayNumeric <= 5) {
-      orderedNumbers.push(currentDayNumeric); 
+      orderedNumbers.push(currentDayNumeric);
 
       const currentWorkdayListIndex = currentDayNumeric - 1;
 
@@ -77,56 +76,22 @@ export class WorkdaysService {
         if (this.dayNameToNumberMap[name] !== undefined) {
           orderedNumbers.push(this.dayNameToNumberMap[name]);
         } else {
-          console.warn(`WorkdaysService: Nome de dia '${name}' não encontrado no dayNameToNumberMap.`);
+          console.warn(
+            `WorkdaysService: Nome de dia '${name}' não encontrado no dayNameToNumberMap.`
+          );
         }
       }
-    } else { 
+    } else {
       for (const name of this.workdayNamesList) {
         if (this.dayNameToNumberMap[name] !== undefined) {
           orderedNumbers.push(this.dayNameToNumberMap[name]);
         } else {
-            console.warn(`WorkdaysService: Nome de dia '${name}' não encontrado no dayNameToNumberMap durante o fim de semana.`);
+          console.warn(
+            `WorkdaysService: Nome de dia '${name}' não encontrado no dayNameToNumberMap durante o fim de semana.`
+          );
         }
       }
     }
     return orderedNumbers;
-  }
-
-  // excluir
-  getOrderedWorkdaysForSpecificDate(specificDate: Date): string[] {
-    const daysOfWeek: string[] = [
-      'Domingo',
-      'Segunda',
-      'Terça',
-      'Quarta',
-      'Quinta',
-      'Sexta',
-      'Sábado',
-    ];
-    const workdayNames: string[] = [
-      'Segunda',
-      'Terça',
-      'Quarta',
-      'Quinta',
-      'Sexta',
-    ];
-    const currentDayIndex = specificDate.getDay();
-
-    let orderedDays: string[] = [];
-
-    if (currentDayIndex >= 1 && currentDayIndex <= 5) {
-      const currentDayName = daysOfWeek[currentDayIndex];
-      const currentWorkdayIndex = workdayNames.indexOf(currentDayName);
-
-      orderedDays.push('Hoje');
-
-      for (let i = 1; i < workdayNames.length; i++) {
-        const nextDayIndex = (currentWorkdayIndex + i) % workdayNames.length;
-        orderedDays.push(workdayNames[nextDayIndex]);
-      }
-    } else {
-      orderedDays = [...workdayNames];
-    }
-    return orderedDays;
   }
 }
