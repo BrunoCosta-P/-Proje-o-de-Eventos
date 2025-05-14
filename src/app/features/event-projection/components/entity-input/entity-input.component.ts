@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core'; 
+import { Component } from '@angular/core'; 
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
@@ -12,7 +12,6 @@ import { EventsStateService } from '../../services/events-state.service';
   styleUrl: './entity-input.component.scss',
 })
 export class EntityInputComponent {
-  todayEvents = input<number>();
   public readonly eventsState: EventsStateService;
 
   constructor(eventsState: EventsStateService) {

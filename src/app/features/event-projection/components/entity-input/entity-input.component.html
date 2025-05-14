@@ -27,7 +27,7 @@
         (keydown)="onKeyDown($event)"
       />
       <span matSuffix class="icon-suffix"> Entidades </span>
-      <mat-hint align="end">Novos eventos para hoje: {{ todayEvents() }}</mat-hint>
+      <mat-hint align="end">Novos eventos para hoje: {{ eventsState.getEventsCountForToday() }}</mat-hint>
     </mat-form-field>
   </section>
 </main>

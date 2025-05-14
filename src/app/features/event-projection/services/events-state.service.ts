@@ -267,4 +267,21 @@ export class EventsStateService {
       return Array.from(updatedMap.values()).sort((a, b) => a.day - b.day);
     });
   }
+
+  public getEventsCountForToday(): number {
+    const today = new Date();
+    const todayDay = today.getDay();
+    return this.existingEventsProjectionSignal()
+      .filter((event) => event.day === todayDay)
+      .reduce((total, event) => {
+        const ev = event.events;
+        return (
+          total +
+          (ev.meetings || 0) +
+          (ev.emails || 0) +
+          (ev.calls || 0) +
+          (ev.follows || 0)
+        );
+      }, 0);
+  }
 }

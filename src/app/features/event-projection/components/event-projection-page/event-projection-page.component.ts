@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
 import { MaterialModule } from '../../../../shared/material.module';
 import { EntityInputComponent } from '../entity-input/entity-input.component';
@@ -39,9 +39,5 @@ export class EventProjectionPageComponent {
 
   constructor(eventsState: EventsStateService) {
     this.eventsState = eventsState;
-  }
-
-  returnTodayEvents() {
-    return 3;
   }
 }
