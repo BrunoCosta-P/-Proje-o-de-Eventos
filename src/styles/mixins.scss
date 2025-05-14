@@ -1,0 +1,30 @@
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+}
+
+@mixin font($family, $size: null, $weight: null, $color: null) {
+    font-family: $family;
+
+    @if $size {
+        font-size: $size;
+    }
+
+    @if $weight {
+        font-weight: $weight;
+    }
+
+    @if $color {
+        color: $color;
+    }
+}
+
+@mixin padding-x($rem) {
+    padding-left: $rem;
+    padding-right: $rem;
+}
+
+@mixin padding-y($rem) {
+    padding-top: $rem;
+    padding-bottom: $rem;
+}
