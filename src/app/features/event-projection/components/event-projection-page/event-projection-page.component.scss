@@ -1,42 +1,75 @@
-@import '../../../../../styles/_colors.scss';
+@use '../../../../../styles/index.scss' as *;
+
+$cor-botao-principal: #00732f;
+$cor-botao-principal-texto: #ffffff;
+$cor-botao-fechar-bg: transparent;
+
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: null) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+
+  @if $gap {
+    gap: $gap;
+  }
+}
+
+@mixin container-width($width) {
+  max-width: $width;
+  width: 100%;
+}
+
+@mixin padding-y($py) {
+  padding-top: $py;
+  padding-bottom: $py;
+}
 
 .event-projection-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 3rem 0;
-  width: 50.188;
+  @include flex(column, center, center);
+  @include padding-y(3rem);
+  @include container-width(100vw);
 
   .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 43.375rem;
+    @include flex(row, space-between, center);
+    @include container-width(43.375rem);
+    h1{
+      @extend .heading-h5;
+    }
   }
 
   .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 43.375rem;
-    padding: 1rem 0;
+    @include flex(column, flex-start, center);
+    @include container-width(43.375rem);
+    @include padding-y(1rem);
 
-    .entity-input__section, .cycle-selector__section{
-      padding: 1rem 0;
-      border-bottom: solid 2px $color-light-gray;
+    .entity-input__section,
+    .cycle-selector__section {
+      @include padding-y(1rem);
+      @include container-width(43.375rem);
+
+      border-bottom: solid 0.125rem $color-light-gray;
     }
 
-    .events-chart__section{
-      padding: 1rem 0;
+    .events-chart__section {
+      @include padding-y(1rem);
+      @include container-width(43.375rem);
+
     }
   }
 
   .footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 20px;
-    width: 43.375rem;
-    gap: 1rem;
+    @include flex(row, flex-end, center, 1rem);
+    margin-top: 1.25rem;
+    @include container-width(43.375rem);
+
+    .footer-btn-close {
+      background-color: $cor-botao-fechar-bg;
+    }
+
+    .footer-btn-start {
+      background-color: $cor-botao-principal;
+      color: $cor-botao-principal-texto;
+    }
   }
 }

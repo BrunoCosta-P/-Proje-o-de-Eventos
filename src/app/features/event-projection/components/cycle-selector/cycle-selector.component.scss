@@ -1,61 +1,36 @@
-$cor-fundo-principal: #f9f9f9;
-$cor-fundo-tabela: #fff;
-$cor-borda-tabela: #e0e0e0;
-$cor-titulo: #3f51b5;
-$cor-header: #5f6368;
-$cor-icone-check: #4CAF50;
-$cor-icone-check-inativo: #bdbdbd;
-$cor-icone-seta: #FF9800;
-$cor-icone-seta-down: #03A9F4;
-$cor-header-tabela: #555;
-$cor-header-grupo: #757575;
-$cor-header-grupo-bg: #f5f5f5;
+@use '../../../../../styles/index.scss' as *;
 
-@mixin flex-center {
-    display: flex;
-    align-items: center;
-}
-
-@mixin font($family, $size: null, $weight: null, $color: null) {
-    font-family: $family;
-
-    @if $size {
-        font-size: $size;
-    }
-
-    @if $weight {
-        font-weight: $weight;
-    }
-
-    @if $color {
-        color: $color;
-    }
-}
-
-@mixin padding-x($rem) {
-    padding-left: $rem;
-    padding-right: $rem;
-}
-
-@mixin padding-y($rem) {
-    padding-top: $rem;
-    padding-bottom: $rem;
-}
 
 ::ng-deep .mat-expansion-panel {
     background-color: transparent !important;
+}
+
+.header-title {
+    @extend .caption-high;
+    color: $colors-Text-text-800;
+}
+
+.description {
+    @extend .caption-low;
+    color: $colors-Text-text-800;
 }
 
 .tabela-container {
     @include font('Arial');
     margin: 1.25rem;
 
+    .coluna-nome-title {
+        
+        color: $colors-button-small;
+    }
+
     .tabela-ciclos {
         border: 0.0625rem solid $cor-borda-tabela;
         border-radius: .5rem;
         overflow: hidden;
 
-        .coluna-icones{
+
+        .coluna-icones {
             text-align: center;
         }
     }
@@ -75,8 +50,8 @@ td {
 }
 
 th {
-    color: $cor-header-tabela;
-    font-weight: normal;
+    @extend .caption-low;
+    color: $colors-Text-text-500;
 }
 
 tbody:last-child tr:last-child td {

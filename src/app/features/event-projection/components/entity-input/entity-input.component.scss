@@ -1,4 +1,4 @@
-@import '../../../../../styles/_colors.scss';
+@use '../../../../../styles/index.scss' as *;
 
 main {
 
@@ -8,7 +8,58 @@ main {
     align-items: center;
     gap: 2rem;
     max-width: 50vw;
+    width: 100%;
     padding: 1.5rem;
     background-color: $color-light-gray;
     border-radius: .5rem;
+
+    .description {
+        width: calc(100% - 300px);
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+
+        h1 {
+            @extend .caption-high;
+            margin-bottom: .5rem;
+        }
+
+        p {
+            @extend .caption-low;
+            color: $colors-Text-text-600;
+        }
+    }
+
+    .input-form {
+        max-width: 280px;
+        width: 100%;
+        box-sizing: border-box;
+
+        .container-input {
+            width: 100%;
+
+            .icon-prefix {
+                max-width: 45px;
+                margin-right: .5rem;
+
+                cursor: pointer;
+
+            }
+
+            .input-field {
+                max-width: 153px;
+                height: 100%;
+
+            }
+
+            .icon-suffix {
+                max-width: 82px;
+                padding: .5rem;
+            }
+        }
+
+    }
 }

@@ -7,8 +7,9 @@
     </p>
   </section>
   <section class="input-form">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="container-input">
       <mat-icon
+      class="icon-prefix"
         matTextPrefix
         (click)="eventsState.entitiesModel()"
         (keydown)="eventsState.entitiesModel()"
@@ -16,6 +17,7 @@
         >play_arrow</mat-icon
       >
       <input
+      class="input-field"
         type="number"
         matInput
         (ngModelChange)="onEntitiesChange($event)"
@@ -24,7 +26,7 @@
         [ngModel]="eventsState.entitiesModel()"
         (keydown)="onKeyDown($event)"
       />
-      <span matSuffix> Entidades </span>
+      <span matSuffix class="icon-suffix"> Entidades </span>
       <mat-hint align="end">Novos eventos para hoje: {{ todayEvents() }}</mat-hint>
     </mat-form-field>
   </section>

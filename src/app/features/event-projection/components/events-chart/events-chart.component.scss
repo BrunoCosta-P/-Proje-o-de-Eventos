@@ -1,0 +1,17 @@
+@use '../../../../../styles/index.scss' as *;
+
+.events-chart {
+    .header-container {
+        h2 {
+            @extend .caption-high;
+            color: $colors-Text-text-800;
+            margin-bottom: 1rem
+        }
+
+        p {
+            @extend .caption-low;
+            color: $colors-Text-text-800;
+            margin-bottom: 2rem
+        }
+    }
+}
