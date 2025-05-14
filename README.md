@@ -8,7 +8,6 @@ Abaixo, um GIF demonstrando a usabilidade da tela principal do sistema:
 
 ![Demonstração da Projeção de Eventos](docs/demo.gif)
 
-> **Nota:** O GIF acima está localizado em `docs/demo.gif`. Substitua pelo seu próprio GIF de demonstração conforme necessário.
 
 ---
 
