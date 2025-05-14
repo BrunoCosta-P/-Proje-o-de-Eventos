@@ -16,11 +16,11 @@
 }
 
 .tabela-container {
-    @include font('Arial');
     margin: 1.25rem;
 
+
     .coluna-nome-title {
-        
+
         color: $colors-button-small;
     }
 
@@ -69,4 +69,12 @@ tbody:last-child tr:last-child td {
 
 .checkmark {
     font-size: 1.25rem;
+}
+
+@media screen and (max-width: 620px) {
+    .tabela-container {
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+
 }

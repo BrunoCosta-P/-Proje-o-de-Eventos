@@ -7,20 +7,20 @@ main {
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    max-width: 50vw;
+    max-width: 43.375rem;
     width: 100%;
     padding: 1.5rem;
     background-color: $color-light-gray;
     border-radius: .5rem;
 
     .description {
-        width: calc(100% - 300px);
-        height: 40px;
+        width: calc(100% - 18.75rem);
+        min-height: 2.5rem;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-
 
         h1 {
             @extend .caption-high;
@@ -34,29 +34,26 @@ main {
     }
 
     .input-form {
-        max-width: 280px;
-        width: 100%;
+        max-width: 17.5rem;
+        width: 60%;
         box-sizing: border-box;
 
         .container-input {
             width: 100%;
 
             .icon-prefix {
-                max-width: 45px;
+                max-width: 2.8125rem;
                 margin-right: .5rem;
-
                 cursor: pointer;
-
             }
 
             .input-field {
-                max-width: 153px;
+                max-width: 9.5625rem;
                 height: 100%;
-
             }
 
             .icon-suffix {
-                max-width: 82px;
+                max-width: 5.125rem;
                 padding: .5rem;
             }
         }
