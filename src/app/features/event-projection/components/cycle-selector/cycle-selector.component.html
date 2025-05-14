@@ -1,5 +1,5 @@
 <main>
-  <mat-expansion-panel hideToggle>
+  <mat-expansion-panel hideToggle >
     <mat-expansion-panel-header>
       <mat-panel-title> Selecione ciclos (opcional) </mat-panel-title>
     </mat-expansion-panel-header>
@@ -19,7 +19,7 @@
         <ng-container
           *ngIf="this.eventsState.categorizedCycles().withEntities.length > 0"
         >
-          <tbody>
+          <tbody class="tabela-ciclos">
             <tr class="grupo-header">
               <td colspan="5">
                 Ciclos com entidades disponíveis ({{
@@ -45,10 +45,10 @@
                 >
               </td>
               <td class="coluna-nome">{{ cycle.name }}</td>
-              <td>
+              <td class="coluna-icones">
                 {{ entitiesModelSignalValue }} / {{ cycle.availableEntities }}
               </td>
-              <td>
+              <td class="coluna-icones">
                 <span *ngIf="!isNaN(cycle.structure.length)">{{
                   this.getEventsForToday(cycle.structure)
                 }}</span>
@@ -62,7 +62,7 @@
             this.eventsState.categorizedCycles().withoutEntities.length > 0
           "
         >
-          <tbody>
+          <tbody class="tabela-ciclos">
             <tr class="grupo-header">
               <td colspan="5">
                 Ciclos sem entidades disponíveis ({{

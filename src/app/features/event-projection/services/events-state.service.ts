@@ -50,32 +50,27 @@ export class EventsStateService {
       if (
         cycle.availableEntities > 0 &&
         cycle.priority === 'HIGH' &&
-        !cycle.selected 
+        !cycle.selected
       ) {
         cyclesWereModified = true;
-        return { ...cycle, selected: true }; 
+        return { ...cycle, selected: true };
       }
-      return cycle; 
+      return cycle;
     });
 
     if (cyclesWereModified) {
-      this.cyclesSignal.set(updatedCycles); 
-      console.log(
-        'EventsStateService: Ciclos de alta prioridade auto-selecionados.'
-      );
+      this.cyclesSignal.set(updatedCycles);
     }
   }
 
   public readonly categorizedCycles: Signal<CategorizedCycles> = computed(
     () => {
-
-
       const priorityOrder: Record<string, number> = {
         HIGH: 1,
         MEDIUM: 2,
         LOW: 3,
       };
-      const currentCycles = this.cyclesSignal(); 
+      const currentCycles = this.cyclesSignal();
 
       if (!Array.isArray(currentCycles)) {
         console.warn(
@@ -90,11 +85,10 @@ export class EventsStateService {
       };
 
       currentCycles.forEach((cycle) => {
-
         if (cycle.availableEntities > 0) {
-          categorized.withEntities.push(cycle); 
+          categorized.withEntities.push(cycle);
         } else {
-          categorized.withoutEntities.push(cycle); 
+          categorized.withoutEntities.push(cycle);
         }
       });
 
@@ -105,19 +99,11 @@ export class EventsStateService {
         (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
       );
 
-      console.log(
-        'EventsStateService: categorizedCycles recalculado. Entidades com ciclos:',
-        categorized.withEntities.map((c) => ({
-          name: c.name,
-          selected: c.selected,
-        })) 
-      );
       return categorized;
     }
   );
 
   public readonly eventsForTodayCount: Signal<number> = computed(() => {
-
     const structure = this.existingEventsProjectionSignal();
     const today = new Date();
     const todayDay = today.getDay();
@@ -137,23 +123,21 @@ export class EventsStateService {
     return 0;
   });
 
-
   public onCheckboxChange(changedCycleFromTemplate: Cycle): void {
     this.cyclesSignal.update((currentCyclesInSignal) => {
-
       const cycleIndex = currentCyclesInSignal.findIndex(
         (c) => c.name === changedCycleFromTemplate.name
       );
 
       if (cycleIndex !== -1) {
-        const newCyclesArray = [...currentCyclesInSignal]; 
+        const newCyclesArray = [...currentCyclesInSignal];
         newCyclesArray[cycleIndex] = {
-          ...currentCyclesInSignal[cycleIndex], 
-          selected: changedCycleFromTemplate.selected, 
+          ...currentCyclesInSignal[cycleIndex],
+          selected: changedCycleFromTemplate.selected,
         };
-        return newCyclesArray; 
+        return newCyclesArray;
       }
-      return currentCyclesInSignal; 
+      return currentCyclesInSignal;
     });
   }
 
@@ -173,7 +157,7 @@ export class EventsStateService {
 
   public subtractEntitiesFromSelectedCycles(): void {
     const entitiesToSubtract = this.entitiesModelSignal();
-    if (entitiesToSubtract <= 0) return; 
+    if (entitiesToSubtract <= 0) return;
 
     this.cyclesSignal.update((cycles) =>
       cycles.map((cycle) =>
@@ -197,8 +181,10 @@ export class EventsStateService {
   }
 
   public deselectAllCycles(): void {
-    this.cyclesSignal.update(cycles =>
-      cycles.map(cycle => cycle.selected ? { ...cycle, selected: false } : cycle)
+    this.cyclesSignal.update((cycles) =>
+      cycles.map((cycle) =>
+        cycle.selected ? { ...cycle, selected: false } : cycle
+      )
     );
   }
 
@@ -209,13 +195,13 @@ export class EventsStateService {
     this.eventsService.getEventsData().subscribe({
       next: (data: EventsProjectionData) => {
         const activities: DailyEvent[] = data.eventsProjection
-          ? data.eventsProjection.map((dailyEvent) => ({ ...dailyEvent })) 
+          ? data.eventsProjection.map((dailyEvent) => ({ ...dailyEvent }))
           : [];
 
         this.existingEventsProjectionSignal.set(activities);
         this.cyclesSignal.set(
           data.cycles ? data.cycles.map((cycle) => ({ ...cycle })) : []
-        ); 
+        );
 
         this._autoSelectHighPriorityCycles();
 
@@ -245,8 +231,8 @@ export class EventsStateService {
 
     this.existingEventsProjectionSignal.update((existingProjection) => {
       const updatedMap = new Map<number, DailyEvent>();
-      existingProjection.forEach(
-        (ev) => updatedMap.set(ev.day, JSON.parse(JSON.stringify(ev))) 
+      existingProjection.forEach((ev) =>
+        updatedMap.set(ev.day, JSON.parse(JSON.stringify(ev)))
       );
 
       selectedCycles.forEach((cycle) => {
@@ -271,7 +257,7 @@ export class EventsStateService {
                   emails: dayEvent.emails || 0,
                   calls: dayEvent.calls || 0,
                   follows: dayEvent.follows || 0,
-                  day: dayEvent.day, 
+                  day: dayEvent.day,
                 },
               });
             }

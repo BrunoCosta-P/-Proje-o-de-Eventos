@@ -16,10 +16,6 @@ $cor-header-grupo-bg: #f5f5f5;
     align-items: center;
 }
 
-@mixin border-radius($radius) {
-    border-radius: $radius;
-}
-
 @mixin font($family, $size: null, $weight: null, $color: null) {
     font-family: $family;
 
@@ -46,14 +42,23 @@ $cor-header-grupo-bg: #f5f5f5;
     padding-bottom: $rem;
 }
 
+::ng-deep .mat-expansion-panel {
+    background-color: transparent !important;
+}
 
 .tabela-container {
     @include font('Arial');
     margin: 1.25rem;
-    border: 0.0625rem solid $cor-borda-tabela;
-    @include border-radius(0.5rem);
-    overflow: hidden;
-    background-color: $cor-fundo-tabela;
+
+    .tabela-ciclos {
+        border: 0.0625rem solid $cor-borda-tabela;
+        border-radius: .5rem;
+        overflow: hidden;
+
+        .coluna-icones{
+            text-align: center;
+        }
+    }
 }
 
 table {
@@ -70,17 +75,12 @@ td {
 }
 
 th {
-    background-color: $cor-fundo-principal;
     color: $cor-header-tabela;
     font-weight: normal;
 }
 
 tbody:last-child tr:last-child td {
     border-bottom: none;
-}
-
-.coluna-icones {
-    @include flex-center;
 }
 
 .grupo-header td {
